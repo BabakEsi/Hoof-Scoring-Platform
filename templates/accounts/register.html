@@ -1,0 +1,110 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Register{% endblock %}
+
+{% block content %}
+
+<link rel="stylesheet" href="{% static 'css/auth.css' %}">
+
+<div class="login-container">
+
+    <div class="login-card">
+
+        <h1>Create Account 🐄</h1>
+        <p>Join HoofScore and start scoring</p>
+
+        {% if messages %}
+            {% for message in messages %}
+                <div class="alert alert-{{ message.tags }}">
+                    {{ message }}
+                </div>
+            {% endfor %}
+        {% endif %}
+
+        <form method="POST">
+            {% csrf_token %}
+
+            <div class="form-group">
+            <label>First Name</label>
+            <input
+                type="text"
+                name="first_name"
+                placeholder="Enter your first name"
+                required
+            >
+        </div>
+
+        <div class="form-group">
+            <label>Last Name</label>
+            <input
+                type="text"
+                name="last_name"
+                placeholder="Enter your last name"
+                required
+            >
+        </div>
+
+            <div class="form-group">
+                <label>Email Address</label>
+                <input
+                    type="email"
+                    name="email"
+                    placeholder="Enter your email"
+                    required
+                >
+            </div>
+
+            <div class="form-group">
+                <label>Password</label>
+                <input
+                    type="password"
+                    name="password"
+                    placeholder="Create a password"
+                    required
+                >
+            </div>
+
+            <div class="form-group">
+                <label>Confirm Password</label>
+                <input
+                    type="password"
+                    name="confirm_password"
+                    placeholder="Repeat your password"
+                    required
+                >
+            </div>
+            <div class="request-box">
+
+            <!-- <h3>Scoring Access Request</h3> -->
+
+            <!-- <p class="request-text">
+                If you would like to score hoof images, you can request scoring access now.
+                An administrator will review your request after your account is created.
+            </p>
+
+            <div class="form-group">
+                <label for="request_message">Message (optional)</label>
+
+                <textarea
+                    id="request_message"
+                    name="request_message"
+                    rows="4"
+                    placeholder="Tell the administrator why you need scoring access..."
+                ></textarea>
+            </div> -->
+
+        </div>
+            <button type="submit" class="login-btn">
+                Submit Request
+            </button>
+        </form>
+        <div class="register-link">
+            Already have an account?
+            <a href="/accounts/login/">Sign In</a>
+        </div>
+
+    </div>
+
+</div>
+{% endblock %}

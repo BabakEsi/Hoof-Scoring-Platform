@@ -1,0 +1,224 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Dashboard{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/dashboard.css' %}">
+{% endblock %}
+{% if messages %}
+<div class="messages">
+    {% for message in messages %}
+        <div class="alert alert-{{ message.tags }}">
+            {{ message }}
+        </div>
+    {% endfor %}
+</div>
+{% endif %}
+<div id="loading-overlay" class="loading-overlay">
+    <div class="loader"></div>
+    <h3>Uploading dataset...</h3>
+    <p>Please wait. This may take a few minutes.</p>
+</div>
+{% block content %}
+
+<div class="dashboard-container">
+
+    <div class="dashboard-header">
+        <h1>Dashboard</h1>
+        <p>Welcome back, {{ request.user.email }}</p>
+    </div>
+
+    <!-- STATS -->
+    <div class="stats-grid">
+
+        <div class="stat-card">
+            <h3>🏡 Farms</h3>
+            <span>{{ farms_count }}</span>
+        </div>
+
+        <div class="stat-card">
+            <h3>⭐ Rated Farms</h3>
+            <span>{{ rated_farms_count }}</span>
+        </div>
+
+        <div class="stat-card">
+            <h3>🐄 Cows</h3>
+            <span>{{ cows_count }}</span>
+        </div>
+
+    </div>
+
+    {% if request.user.role == "admin" %}
+
+    <div class="admin-section">
+
+        <h2>🏡 Farms</h2>
+
+        <div class="farm-grid">
+
+            {% for farm in farms %}
+
+            <div class="farm-card">
+
+                <div class="farm-header">
+                    
+                    <div class="farm-title-row">
+                        <a href="{% url 'annotation:farm_detail_admin' farm.id %}" class="farm-title">
+                            🏡 {{ farm.name }}
+                        </a>
+                        {% if farm.description %}
+                        <div class="farm-description">
+                            {{ farm.description }}
+                        </div>
+                        {% endif %}
+
+                    </div>
+
+                </div>
+
+
+                <div class="farm-meta">
+                    <span>🐄 {{ farm.cows.count }} cows</span>
+                    <span>📅 {{ farm.created_at|date:"Y-m-d" }}</span>
+                </div>
+
+                <div class="farm-actions">
+
+                <a
+                    href="{% url 'annotation:farm_detail_admin' farm.id %}"
+                    class="btn-farm btn-view">
+                    👁 View
+                </a>
+
+                <a
+                    href="{% url 'annotation:edit_farm' farm.id %}"
+                    class="btn-farm btn-edit">
+                    ✏️ Edit
+                </a>
+
+                <form
+                    method="post"
+                    action="{% url 'annotation:delete_farm' farm.id %}"
+                    style="display:inline;"
+                    onsubmit="return confirm('Delete {{ farm.name }}?');"
+                >
+                    {% csrf_token %}
+
+                    <button
+                        type="submit"
+                        class="btn-farm btn-delete"
+                    >
+                        🗑 Delete
+                    </button>
+                </form>
+
+            </div>
+
+
+            </div>
+
+            {% empty %}
+
+            <p class="empty-text">No farms found</p>
+
+            {% endfor %}
+
+        </div>
+
+    </div>
+
+    {% endif %}
+
+    {% if request.user.role == "admin" %}
+
+    <div class="admin-actions">
+
+        <h2>⚙️ Admin Controls</h2>
+
+        <form method="POST"
+      action="{% url 'annotation:upload_dataset' %}"
+      enctype="multipart/form-data">
+    {% csrf_token %}
+
+        <!-- DATASET PATH -->
+        <div class="form-group">
+        <label>Dataset Directory (optional)</label>
+
+        <input
+            type="text"
+            name="dataset_path"
+            class="form-control"
+            placeholder="/home/user/projects/linux"
+            autocomplete="off"
+        >
+    </div>
+
+    <div class="text-center my-3">
+        <strong>OR</strong>
+    </div>
+
+    <div class="form-group">
+        <label>Upload ZIP File (optional)</label>
+        <input
+            type="file"
+            name="zip_file"
+            accept=".zip"
+        >
+    </div>
+
+        <button type="submit" class="btn-upload">
+            🚀 Upload & Process
+        </button>
+        <a
+            href="{% url 'annotation:export_excel' %}"
+            class="btn-export"
+        >
+            📊 Export Excel
+        </a>
+    </form>
+    <div id="uploadMessage"></div>
+
+    </div>
+
+    {% endif %}
+
+    <div class="quick-actions">
+
+        <h2>Quick Actions</h2>
+
+        <div class="actions-grid">
+
+            <a href="{% url 'annotation:home' %}" class="action-card">
+                🎯 Start Review
+            </a>
+
+            <a href="{% url 'accounts:profile' %}" class="action-card">
+                👤 My Profile
+            </a>
+            {% if request.user.role == "admin" %}
+            <a href="{% url 'annotation:ratings_admin' %}" class="action-card">
+                ⭐ View all reviews
+            </a>
+            {% endif %}
+            {% if request.user.role == "admin" %}
+                <a href="{% url 'accounts:scoring_requests' %}" class="action-card">
+                    📨 Scoring Requests
+                </a>
+            {% endif %}
+
+        </div>
+
+    </div>
+
+</div>
+<script>
+document
+    .querySelector("form[action*='upload_dataset']")
+    .addEventListener("submit", function () {
+
+        document.getElementById("loading-overlay").style.display = "flex";
+
+    });
+</script>
+{% endblock %}

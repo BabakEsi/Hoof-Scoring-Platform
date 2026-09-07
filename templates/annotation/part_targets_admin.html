@@ -1,0 +1,49 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/part_targets_admin.css' %}">
+{% endblock %}
+
+{% block content %}
+
+<div class="part-targets-page">
+
+    <div class="container">
+
+        <h1>🐮 {{ cow.name }}</h1>
+
+        <h3>Part: {{ code }}</h3>
+
+        <p>Available Targets</p>
+
+        <div class="parts-grid">
+
+            {% for target in targets %}
+                {% if camera == "MIXED_FRONT" %}
+
+                <a href="{% url 'annotation:mixed_front_target_detail_admin' cow.id target.id %}"
+                class="part-card">
+
+                {% else %}
+
+                <a href="{% url 'annotation:target_detail_admin' cow.id target.id %}?camera={{ camera }}"
+                class="part-card">
+
+                {% endif %}
+
+                    <h2>{{ target.short_name }}</h2>
+                    <small>{{ target.num_annotations }} images</small>
+
+                </a>
+            {% empty %}
+                <p>No images available.</p>
+            {% endfor %}
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}

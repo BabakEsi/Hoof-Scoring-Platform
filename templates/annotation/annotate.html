@@ -1,0 +1,276 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Annotate Cow{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/annotate.css' %}">
+{% endblock %}
+
+{% block content %}
+
+<div class="annotate-container">
+
+    <!-- HEADER -->
+    <div class="annotate-header">
+
+        
+
+        <span class="badge">
+            🎥 Score: {{ mode }}
+        </span>
+
+    </div>
+
+    <form
+        id="ratingForm"
+        method="post"
+        action=""
+    >
+        {% csrf_token %}
+      
+        <!-- IMAGES -->
+       <div class="image-section">
+
+    {% if image_urls %}
+
+        <button type="button" id="prevBtn" class="img-nav">
+            ⬅
+        </button>
+
+        <div class="image-wrapper">
+
+            <div class="image-counter">
+                Image
+                <span id="currentImage">1</span>
+                /
+                <span id="totalImages">{{ images|length }}</span>
+            </div>
+
+<div class="image-card">
+
+    <div class="image-card-header">
+
+        <h4 id="imageTitle">✂ Hoof</h4>
+
+        <button
+            type="button"
+            id="toggleWholeBtn"
+            class="btn-toggle"
+        >
+            🐄 Whole Cow
+        </button>
+
+    </div>
+
+    <img
+        id="cropImage"
+        src="{{ images.0.cropped }}"
+        class="frame-img"
+    >
+
+</div>
+
+        </div>
+
+        {{ images|json_script:"images-data" }}
+
+        <button type="button" id="nextBtn" class="img-nav">
+            ➡
+        </button>
+
+    {% endif %}
+
+</div>
+
+        <!-- RATING -->
+        <div class="rating-box">
+
+            <h3>⭐ Give your score</h3>
+            <input
+                type="hidden"
+                name="target_id"
+                value="{{ target.id }}"
+            >
+            <div class="numbers">
+    
+                
+
+        {% for i in score_range %}
+        <label class="num-label">
+
+            <input
+                type="radio"
+                name="score"
+                value="{{ i }}"
+                {% if current_rating and current_rating.score == i %}
+                    checked
+                {% endif %}
+            >
+
+            <span class="num">
+                {{ i }}
+            </span>
+
+        </label>
+        {% endfor %}
+                <label class="num-label">
+                    <input
+                        type="radio"
+                        name="score"
+                        value="0"
+                        {% if current_rating and current_rating.score == 0 %}
+                            checked
+                        {% endif %}
+                    >
+                    <span class="num no-opinion">
+                        <span class="q-mark">?</span>
+                    </span>
+                </label>
+                
+            </div>
+
+            <div class="action-buttons">
+
+            {% if can_go_back %}
+            <a href="?mode={{ mode }}&back=1" class="btn-back">
+                ← Previous
+            </a>
+            {% endif %}
+
+            <button
+                type="submit"
+                class="btn-submit"
+            >
+                Submit & Next →
+            </button>
+
+        </div>
+
+        </div>
+
+    </form>
+
+</div>
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+
+    const images = JSON.parse(
+        document.getElementById("images-data").textContent
+    );
+
+    const cropImage = document.getElementById("cropImage");
+
+    const nextBtn = document.getElementById("nextBtn");
+    const prevBtn = document.getElementById("prevBtn");
+
+    let current = 0;
+    let showOriginal = false;
+
+    const toggleBtn = document.getElementById("toggleWholeBtn");
+
+    function show(index){
+
+        if(index < 0 || index >= images.length){
+            return;
+        }
+
+        current = index;
+
+        document.getElementById("currentImage").textContent = current + 1;
+
+        cropImage.src = showOriginal
+            ? images[current].original
+            : images[current].cropped;
+
+        imageTitle.innerHTML = showOriginal
+            ? "🐄 Whole Cow"
+            : "✂ Hoof";
+
+        prevBtn.disabled = (current === 0);
+        nextBtn.disabled = (current === images.length - 1);
+    }
+
+    nextBtn.onclick = function () {
+        show(current + 1);
+    };
+
+    prevBtn.onclick = function () {
+        show(current - 1);
+    };
+
+    show(0);
+    toggleBtn.addEventListener("click", function(){
+
+        showOriginal = !showOriginal;
+
+        cropImage.src = showOriginal
+            ? images[current].original
+            : images[current].cropped;
+
+        toggleBtn.innerHTML = showOriginal
+            ? "✂ Hoof"
+            : "🐄 Whole Cow";
+        imageTitle.innerHTML = showOriginal
+            ? "🐄 Whole Cow"
+            : "✂ Hoof";
+    });
+
+    document.addEventListener("keydown", function(e){
+
+        if (
+            document.activeElement.tagName === "INPUT" ||
+            document.activeElement.tagName === "TEXTAREA"
+        ){
+            return;
+        }
+
+        switch(e.key){
+
+            case "ArrowRight":
+                e.preventDefault();
+                nextBtn.click();
+                break;
+
+            case "ArrowLeft":
+                e.preventDefault();
+                prevBtn.click();
+                break;
+
+            case "0":
+            case "1":
+            case "2":
+            case "3":
+            case "4":
+            case "5":
+            case "6":
+            case "7":
+            case "8":
+            case "9":
+
+            
+
+                const radio = document.querySelector(
+                    `input[name="score"][value="${e.key}"]`
+                );
+
+                if(radio){
+                    radio.checked = true;
+                }
+
+                break;
+
+            case "Enter":
+                e.preventDefault();
+                document.getElementById("ratingForm").submit();
+                break;
+        }
+        const imageTitle = document.getElementById("imageTitle");
+
+    });
+
+});
+</script>
+
+{% endblock %}

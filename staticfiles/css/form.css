@@ -1,0 +1,117 @@
+/* CENTER PAGE */
+.form-container {
+    min-height: calc(100vh - 120px);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 40px 20px;
+    background: #f8fafc;
+}
+
+/* CARD */
+.form-card {
+    width: 100%;
+    max-width: 450px;
+    background: white;
+    padding: 30px;
+    border-radius: 16px;
+
+    box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+    border-top: 4px solid #22c55e;
+}
+
+/* TITLE */
+.form-card h1 {
+    text-align: center;
+    margin-bottom: 25px;
+    color: #15803d;
+    font-size: 22px;
+}
+
+/* FORM GROUP */
+.form-group {
+    margin-bottom: 18px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 6px;
+    font-weight: 600;
+    color: #374151;
+}
+
+/* INPUTS */
+.form-group input,
+.form-group textarea {
+    width: 100%;
+    padding: 12px 14px;
+
+    border: 1px solid #e5e7eb;
+    border-radius: 10px;
+
+    font-size: 14px;
+
+    transition: 0.2s;
+    outline: none;
+}
+
+/* FOCUS EFFECT */
+.form-group input:focus,
+.form-group textarea:focus {
+    border-color: #22c55e;
+    box-shadow: 0 0 0 3px rgba(34,197,94,0.15);
+}
+
+/* TEXTAREA */
+.form-group textarea {
+    min-height: 90px;
+    resize: none;
+}
+
+/* SAVE BUTTON */
+.btn {
+    width: 100%;
+    padding: 12px;
+
+    background: #22c55e;
+    color: white;
+
+    border: none;
+    border-radius: 10px;
+
+    font-size: 15px;
+    font-weight: 600;
+
+    cursor: pointer;
+
+    transition: 0.2s;
+}
+.form-group select {
+    width: 100%;
+    padding: 12px;
+    border-radius: 10px;
+    border: 1px solid #e5e7eb;
+    background: white;
+}
+
+/* HOVER */
+.btn:hover {
+    background: #15803d;
+    transform: translateY(-2px);
+}
+
+/* SMALL ANIMATION */
+.form-card {
+    animation: fadeIn 0.3s ease;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}

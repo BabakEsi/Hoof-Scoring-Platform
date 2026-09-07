@@ -1,0 +1,172 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}All Ratings{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/all_ratings.css' %}">
+{% endblock %}
+
+{% block content %}
+
+<div class="ratings-container">
+
+    <div class="ratings-header">
+
+        <div>
+            <h1>📊 All Ratings</h1>
+            <p>View and manage all scores submitted by scorers and testers.</p>
+        </div>
+
+        <div class="ratings-count">
+            {{ ratings|length }}
+            <span>Total Ratings</span>
+        </div>
+
+    </div>
+
+    <div class="ratings-table-wrapper">
+
+        <table class="ratings-table">
+
+            <thead>
+                <tr>
+                    <th>User</th>
+                    <th>Email</th>
+                    <th>Role</th>
+                    <th>Farm</th>
+                    <th>Cow</th>
+                    <th>Target</th>
+                    <th>Score</th>
+                    <th>Date</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+
+            <tbody>
+
+            {% for rating in ratings %}
+
+                <tr>
+
+                    <!-- USER -->
+                    <td>
+                        <strong>
+                            {{ rating.user.get_full_name|default:"-" }}
+                        </strong>
+                    </td>
+
+                    <!-- EMAIL -->
+                    <td>
+                        {{ rating.user.email }}
+                    </td>
+
+                    <!-- ROLE -->
+                    <td>
+
+                        {% if rating.user.role == "tester" %}
+
+                            <span class="role-badge tester">
+                                🧪 Tester
+                            </span>
+
+                        {% elif rating.user.role == "admin" %}
+
+                            <span class="role-badge admin">
+                                👑 Admin
+                            </span>
+
+                        {% else %}
+
+                            <span class="role-badge scorer">
+                                ⭐ Scorer
+                            </span>
+
+                        {% endif %}
+
+                    </td>
+
+                    <!-- FARM -->
+                    <td>
+                        {{ rating.rating_target.sequence.cow.farm.name|default:"-" }}
+                    </td>
+
+                    <!-- COW -->
+                    <td>
+                        {{ rating.rating_target.sequence.cow.name|default:"-" }}
+                    </td>
+
+                    <!-- TARGET -->
+                    <td>
+                        <span class="target-badge">
+                            {{ rating.rating_target.get_target_type_display }}
+                        </span>
+                    </td>
+
+                    <!-- SCORE -->
+                    <td>
+
+                        {% if rating.score == 0 %}
+
+                            <span class="score-badge score-na">
+                                ?
+                            </span>
+
+                        {% else %}
+
+                            <span class="score-badge score-{{ rating.score }}">
+                                ⭐ {{ rating.score }}
+                            </span>
+
+                        {% endif %}
+
+                    </td>
+
+                    <!-- DATE -->
+                    <td>
+                        {{ rating.created_at|date:"Y-m-d H:i" }}
+                    </td>
+
+                    <!-- DELETE -->
+                    <td>
+
+                        <form
+                            method="post"
+                            action="{% url 'annotation:delete_rating' rating.id %}"
+                            onsubmit="return confirm('Delete this rating?');"
+                        >
+
+                            {% csrf_token %}
+
+                            <button
+                                type="submit"
+                                class="btn-delete-rating"
+                            >
+                                🗑 Delete
+                            </button>
+
+                        </form>
+
+                    </td>
+
+                </tr>
+
+            {% empty %}
+
+                <tr>
+                    <td colspan="9" class="empty-ratings">
+                        No ratings found.
+                    </td>
+                </tr>
+
+            {% endfor %}
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+</div>
+
+{% endblock %}

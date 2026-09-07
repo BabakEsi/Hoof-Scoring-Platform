@@ -1,0 +1,26 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>{% block title %}CowLabel{% endblock %}</title>
+
+    <link rel="stylesheet" href="{% static 'css/main.css' %}">
+    <link rel="stylesheet" href="{% static 'css/farm_detail_admin.css' %}">
+
+    {% block extra_css %}{% endblock %}
+</head>
+
+<body>
+
+{% include "components/header.html" %}
+
+<main>
+    {% block content %}{% endblock %}
+</main>
+
+{% include "components/footer.html" %}
+
+</body>
+</html>

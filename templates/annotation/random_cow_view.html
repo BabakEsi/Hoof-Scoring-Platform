@@ -1,0 +1,34 @@
+{% extends "base.html" %}
+
+{% block title %}Cow Annotation{% endblock %}
+
+{% block content %}
+
+<div class="cow-view-container">
+
+    <h1>🐄 {{ cow.name }}</h1>
+
+    <p>📍 Farm: {{ farm.name }}</p>
+    <p>📷 Camera: {{ camera_type }}</p>
+
+    <div class="image-grid">
+
+        {% for seq in sequences %}
+
+            {% for img in seq.images.all %}
+
+                <img src="{{ img.image.url }}" class="cow-img">
+
+            {% endfor %}
+
+        {% empty %}
+
+            <p>No images found for this camera</p>
+
+        {% endfor %}
+
+    </div>
+
+</div>
+
+{% endblock %}

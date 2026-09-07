@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/cow_parts_admin.css' %}">
+{% endblock %}
+
+{% block content %}
+
+<div class="parts-container">
+
+    <h1>🐮 {{ cow.name }}</h1>
+    <p>Select a scoring target</p>
+
+    <div class="parts-grid">
+
+        {% for code, name in parts %}
+
+        <a href="{% url 'annotation:part_targets_admin' cow.id code %}"
+        class="part-card">
+
+            <h2>{{ name }}</h2>
+
+        </a>
+
+        {% endfor %}
+
+
+    </div>
+
+</div>
+
+{% endblock %}

@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+
+{% block title %}Select View{% endblock %}
+
+{% block content %}
+
+<div class="select-container">
+
+    <h1>🎥 Select Camera View</h1>
+
+    <p>Choose how you want to annotate cows in this farm</p>
+
+    <div class="select-grid">
+
+        <a href="{% url 'annotation:farm_random_cow' farm.id 'front' %}" class="select-card">
+            📷 Front Camera
+        </a>
+
+        <a href="{% url 'annotation:farm_random_cow' farm.id 'side' %}" class="select-card">
+            📷 Side Camera
+        </a>
+
+    </div>
+
+</div>
+
+{% endblock %}

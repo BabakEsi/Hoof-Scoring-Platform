@@ -1,0 +1,56 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/request_access.css' %}">
+{% endblock %}
+
+{% block content %}
+
+<div class="request-container">
+
+    <h1>Request Scoring Access</h1>
+
+    <p>
+        Submit a request to gain access to the hoof scoring platform.
+        Your request will be reviewed by an administrator.
+    </p>
+
+    {% if existing %}
+
+        <div class="alert-warning">
+            ⏳ Your request is currently pending approval.
+        </div>
+
+    {% else %}
+
+        <div class="info-box">
+            Once approved, you will be able to start scoring cow images.
+        </div>
+
+        <form method="post">
+
+            {% csrf_token %}
+
+            <div class="form-group">
+                <label for="message">Message (optional)</label>
+
+                <textarea
+                    id="message"
+                    name="message"
+                    class="form-control"
+                    placeholder="Write a short message for the administrator..."
+                ></textarea>
+            </div>
+
+            <button type="submit" class="btn-submit">
+                📨 Send Request
+            </button>
+
+        </form>
+
+    {% endif %}
+
+</div>
+
+{% endblock %}

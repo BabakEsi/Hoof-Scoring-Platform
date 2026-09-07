@@ -1,0 +1,216 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/scoring_requests.css' %}">
+{% endblock %}
+
+{% block content %}
+
+<div class="requests-container">
+
+    <h1>Scoring Access Requests</h1>
+
+    <table class="requests-table">
+
+        <thead>
+            <tr>
+                <th>User</th>
+                <th>Email</th>
+                <th>Role</th>
+                <th>Account Status</th>
+                <th>Registered</th>
+                <th>Scoring Access</th>
+                <th>Role Action</th>
+            </tr>
+        </thead>
+
+        <tbody>
+
+        {% for user in users %}
+
+        <tr>
+
+            <!-- USER -->
+            <td>
+                {{ user.get_full_name|default:"-" }}
+            </td>
+
+            <!-- EMAIL -->
+            <td>
+                {{ user.email }}
+            </td>
+
+            <!-- ROLE -->
+            <td>
+
+                {% if user.role == "admin" %}
+
+                    <span class="role-badge role-admin">
+                        👑 Admin
+                    </span>
+
+                {% elif user.role == "tester" %}
+
+                    <span class="role-badge role-tester">
+                        🧪 Tester
+                    </span>
+
+                {% else %}
+
+                    <span class="role-badge role-scorer">
+                        ⭐ Scorer
+                    </span>
+
+                {% endif %}
+
+            </td>
+
+            <!-- ACCOUNT STATUS -->
+            <td>
+
+                <span class="status status-{{ user.status }}">
+                    {{ user.get_status_display }}
+                </span>
+
+            </td>
+
+            <!-- REGISTERED -->
+            <td>
+                {{ user.created_at|date:"Y-m-d H:i" }}
+            </td>
+
+            <!-- SCORING ACCESS -->
+            <td>
+
+                {% if user.role == "admin" %}
+
+                    <span class="access-admin">
+                        👑 Full Access
+                    </span>
+
+                {% elif user.role == "tester" %}
+
+                    <span class="access-granted">
+                        ✓ Scoring Access
+                    </span>
+
+                {% elif user.role == "scorer" %}
+
+                    <span class="access-granted">
+                        ✓ Scoring Access
+                    </span>
+
+                {% elif user.role == "user" and user.status == "approved" %}
+
+                    <span class="access-granted">
+                        ✓ Scoring Access
+                    </span>
+
+                {% else %}
+
+                    <span class="access-none">
+                        No Access
+                    </span>
+
+                {% endif %}
+
+            </td>
+
+            <!-- ROLE ACTION -->
+            <td>
+            <div class="role-actions">
+
+                <!-- SCORER -->
+                <form
+                    method="post"
+                    action="{% url 'accounts:set_scorer' user.id %}"
+                >
+                    {% csrf_token %}
+
+                    <button
+                        type="submit"
+                        class="btn-scorer {% if user.role == 'scorer' %}active{% endif %}"
+                    >
+                        ⭐ Scorer
+                    </button>
+                </form>
+
+
+                <!-- TESTER -->
+                <form
+                    method="post"
+                    action="{% url 'accounts:set_tester' user.id %}"
+                >
+                    {% csrf_token %}
+
+                    <button
+                        type="submit"
+                        class="btn-tester {% if user.role == 'tester' %}active{% endif %}"
+                    >
+                        🧪 Tester
+                    </button>
+                </form>
+
+
+                <!-- REJECT / Revoke USER -->
+                {% if user.role == "scorer" or user.role == "tester" %}
+
+    <!-- REVOKE ACCESS -->
+    <form
+        method="post"
+        action="{% url 'accounts:revoke_scoring_request' user.id %}"
+        onsubmit="return confirm('Revoke access from {{ user.email }}?');"
+    >
+        {% csrf_token %}
+
+        <button
+            type="submit"
+            class="btn-revoke"
+        >
+            🔒 Revoke
+        </button>
+    </form>
+
+        {% elif user.role != "admin" %}
+
+            <!-- REJECT USER -->
+            <form
+                method="post"
+                action="{% url 'accounts:reject_scoring_request' user.id %}"
+                onsubmit="return confirm('Are you sure you want to reject {{ user.email }}?');"
+            >
+                {% csrf_token %}
+
+                <button
+                    type="submit"
+                    class="btn-reject"
+                >
+                    ✕ Reject
+                </button>
+            </form>
+
+        {% endif %}
+
+            </div>
+        </td>
+
+        </tr>
+
+        {% empty %}
+
+        <tr>
+            <td colspan="7">
+                No users found.
+            </td>
+        </tr>
+
+        {% endfor %}
+
+        </tbody>
+
+    </table>
+
+</div>
+
+{% endblock %}

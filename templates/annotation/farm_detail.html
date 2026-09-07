@@ -1,0 +1,84 @@
+{% extends "base.html" %}
+
+{% block title %}Farm Detail{% endblock %}
+
+{% block content %}
+
+<div class="dashboard-container">
+
+    <div class="dashboard-header">
+        <h1>🏡 {{ farm.name }}</h1>
+        {% if farm.description and farm.description != "None" %}
+            <p>{{ farm.description }}</p>
+        {% endif %}
+    </div>
+
+    <h2>🐄 Cows</h2>
+
+<div class="list-grid">
+
+    {% for cow in cows %}
+
+        <div class="mini-card">
+
+            <div class="cow-title">
+                {{ cow.name }} ({{ cow.farm.name }})
+            </div>
+
+            <div class="cow-meta">
+                {% with sequence=cow.sequences.first %}
+                    {% if sequence %}
+                        {% if sequence.camera_setup == "2" %}
+                            📷 Two-camera setup
+                        {% elif sequence.camera_setup == "3" %}
+                            📷 Three-camera setup
+                        {% endif %}
+                    {% else %}
+                        No sequences
+                    {% endif %}
+                {% endwith %}
+            </div>
+
+            <div class="cow-ratings">
+
+                <small><b>Ratings:</b></small><br>
+
+                {% for seq in cow.sequences.all %}
+
+                    <div class="seq-rating-box">
+
+                        <small>
+                            📷 {{ seq.get_camera_setup_display }}
+                        </small>
+
+                        <div>
+
+                            {% if seq.ratings.all %}
+
+                                {% for r in seq.ratings.all %}
+                                    <div class="rating-line">
+                                        👤 {{ r.user.email }} → ⭐ {{ r.score }}
+                                    </div>
+                                {% endfor %}
+
+                            {% else %}
+                                <div class="no-rating">
+                                    No ratings yet
+                                </div>
+                            {% endif %}
+
+                        </div>
+
+                    </div>
+
+                {% endfor %}
+
+            </div>
+
+        </div>
+
+    {% endfor %}
+
+</div>
+
+{% endblock %}

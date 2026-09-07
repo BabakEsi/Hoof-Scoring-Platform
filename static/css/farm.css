@@ -1,0 +1,88 @@
+/* FARM PAGE CONTAINER */
+.farm-container {
+    max-width: 1100px;
+    margin: 40px auto;
+    padding: 20px;
+}
+
+.page-title {
+    margin-bottom: 30px;
+    color: #15803d;
+    font-size: 28px;
+    font-weight: bold;
+}
+
+/* FARM CARD */
+.farm-card {
+    background: white;
+    border-radius: 16px;
+    padding: 20px;
+    margin-bottom: 20px;
+
+    border: 1px solid #e5e7eb;
+    box-shadow: 0 4px 14px rgba(0,0,0,0.05);
+
+    transition: 0.2s ease;
+}
+
+.farm-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 10px 25px rgba(0,0,0,0.08);
+}
+
+/* FARM HEADER */
+.farm-header h2 {
+    margin-bottom: 6px;
+    color: #14532d;
+    font-size: 20px;
+}
+
+.farm-header p {
+    color: #6b7280;
+    font-size: 14px;
+    margin-bottom: 16px;
+}
+
+/* COW GRID */
+.cow-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 12px;
+}
+
+/* COW CARD */
+.cow-card {
+    background: #f8fafc;
+    padding: 12px;
+    border-radius: 10px;
+
+    text-decoration: none;
+    border: 1px solid #e5e7eb;
+
+    transition: 0.2s;
+}
+
+.cow-card:hover {
+    background: #dcfce7;
+    transform: translateY(-2px);
+    border-color: #22c55e;
+}
+
+/* COW TEXT */
+.cow-name {
+    font-weight: bold;
+    color: #14532d;
+    margin-bottom: 6px;
+}
+
+.cow-meta {
+    font-size: 12px;
+    color: #6b7280;
+}
+
+/* EMPTY STATES */
+.empty {
+    color: #9ca3af;
+    font-size: 14px;
+    padding: 10px 0;
+}

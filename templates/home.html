@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Home{% endblock %}
+
+{% block content %}
+<link rel="stylesheet" href="{% static 'css/home.css' %}">
+
+<section class="hero">
+
+    <div class="hero-content">
+
+        <h1>Hoof Scoring Platform</h1>
+
+        <p>Start scoring dataset efficiently</p>
+
+        <div class="mode-buttons">
+
+            <a href="{% url 'annotation:annotate' %}?mode=Foot angle" class="btn">
+                Foot angle
+            </a>
+
+            <a href="{% url 'annotation:annotate' %}?mode=Claw set" class="btn btn-secondary">
+                Claw set
+            </a>
+
+        </div>
+
+    </div>
+
+</section>
+{% endblock %}

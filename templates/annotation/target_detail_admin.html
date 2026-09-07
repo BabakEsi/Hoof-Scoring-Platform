@@ -1,0 +1,172 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/target_detail_admin.css' %}">
+{% endblock %}
+
+{% block content %}
+
+<div class="annotate-container">
+
+    <!-- HEADER -->
+    <div class="annotate-header">
+        <h1>🐮 {{ cow.name }}</h1>
+        <h3>🎯 {{ target.short_name }}</h3>
+
+        <p>Frame {{ index|add:1 }} / {{ total }}</p>
+    </div>
+
+    <!-- CROPPED IMAGES -->
+    <div class="cropped-section">
+
+        <h3>✂ Cropped Images</h3>
+
+        <div class="cropped-grid">
+
+    <div class="image-wrapper">
+
+        {% if current_annotation %}
+
+            <img
+                src="{{ current_annotation.cropped_image.url }}"
+                class="frame-image"
+            >
+
+        {% else %}
+
+            <p>No cropped images</p>
+
+        {% endif %}
+
+    </div>
+
+    </div>
+
+    <!-- NAV -->
+    <div class="nav-buttons">
+
+    {% if index > 0 %}
+    <a
+        id="prevBtn"
+        class="btn"
+        href="?camera={{ camera }}&i={{ index|add:'-1' }}">
+        ⬅ Prev
+    </a>
+    {% endif %}
+
+    {% if index < total|add:'-1' %}
+    <a
+        id="nextBtn"
+        class="btn"
+        href="?camera={{ camera }}&i={{ index|add:'1' }}">
+        Next ➡
+    </a>
+    {% endif %}
+
+    </div>
+    {% if camera == "SIDE" or camera == "MIXED_FRONT" %}
+
+    <!-- Rating -->
+{% if camera == "SIDE" or camera == "MIXED_FRONT" %}
+
+<h3 class="ratings-title">📊 Ratings</h3>
+
+<div class="ratings-list">
+
+    {% for r in ratings %}
+
+    <div class="rating-card">
+
+        <div class="rating-left">
+
+            <div class="rating-avatar">
+                {{ r.user.first_name|first }}{{ r.user.last_name|first }}
+            </div>
+
+            <div>
+
+                <div class="rating-user">
+                    {{ r.user.first_name }} {{ r.user.last_name }}
+                </div>
+
+                <div class="rating-email">
+                    {{ r.user.email }}
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="rating-center">
+
+            <span class="target-badge">
+                {{ r.display_target }}
+            </span>
+
+        </div>
+
+        <div class="rating-right">
+
+            <div class="score-badge score-{{ r.score }}">
+                {% if r.score|stringformat:"s" == "0" %}
+                    ?
+                {% else %}
+                    ⭐ {{ r.score }}
+                {% endif %}
+            </div>
+            <div class="rating-date">
+                {{ r.created_at|date:"Y-m-d H:i" }}
+            </div>
+
+        </div>
+
+    </div>
+
+    {% empty %}
+
+    <div class="empty-rating">
+        No ratings yet.
+    </div>
+
+    {% endfor %}
+
+</div>
+
+{% endif %}
+</div>
+{% endif %}
+
+<script>
+document.addEventListener("keydown", function (e) {
+
+    if (
+        document.activeElement.tagName === "INPUT" ||
+        document.activeElement.tagName === "TEXTAREA"
+    ) {
+        return;
+    }
+
+    if (e.key === "ArrowLeft") {
+
+        const prev = document.getElementById("prevBtn");
+
+        if (prev) {
+            e.preventDefault();
+            prev.click();
+        }
+    }
+
+    if (e.key === "ArrowRight") {
+
+        const next = document.getElementById("nextBtn");
+
+        if (next) {
+            e.preventDefault();
+            next.click();
+        }
+    }
+
+});
+</script>
+{% endblock %}

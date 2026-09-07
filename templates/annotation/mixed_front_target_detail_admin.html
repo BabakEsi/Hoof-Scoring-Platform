@@ -1,0 +1,143 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/target_detail_admin.css' %}">
+{% endblock %}
+
+{% block content %}
+
+<div class="annotate-container">
+
+    <!-- HEADER -->
+    <div class="annotate-header">
+
+        <h1>🐮 {{ cow.name }}</h1>
+
+        <h3>🎯 {{ target.short_name }}</h3>
+
+        <p>Frame {{ index|add:1 }} / {{ total }}</p>
+
+    </div>
+
+    <!-- IMAGES -->
+    <div class="image-pair">
+
+        <div class="image-card">
+
+            <h4>Front 1</h4>
+
+            {% if left %}
+                <img
+                    src="{{ left.cropped_image.url }}"
+                    class="frame-image"
+                >
+            {% else %}
+                <p>No image</p>
+            {% endif %}
+
+        </div>
+
+        <div class="image-card">
+
+            <h4>Front 2</h4>
+
+            {% if right %}
+                <img
+                    src="{{ right.cropped_image.url }}"
+                    class="frame-image"
+                >
+            {% else %}
+                <p>No image</p>
+            {% endif %}
+
+        </div>
+
+    </div>
+
+    <!-- NAVIGATION -->
+    <div class="nav-buttons">
+
+        {% if index > 0 %}
+            <a
+                class="btn"
+                href="?i={{ index|add:'-1' }}"
+            >
+                ⬅ Previous
+            </a>
+        {% endif %}
+
+        {% if index < total|add:'-1' %}
+            <a
+                class="btn"
+                href="?i={{ index|add:'1' }}"
+            >
+                Next ➡
+            </a>
+        {% endif %}
+
+    </div>
+
+    <!-- RATINGS -->
+    <h3 class="ratings-title">📊 Ratings</h3>
+
+    <div class="ratings-list">
+
+        {% for r in ratings %}
+
+        <div class="rating-card">
+
+            <div class="rating-left">
+
+                <div class="rating-avatar">
+                    {{ r.user.first_name|first }}{{ r.user.last_name|first }}
+                </div>
+
+                <div>
+                    <div class="rating-user">
+                        {{ r.user.first_name }} {{ r.user.last_name }}
+                    </div>
+
+                    <div class="rating-email">
+                        {{ r.user.email }}
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="rating-center">
+                <span class="target-badge">
+                    {{ r.display_target }}
+                </span>
+            </div>
+
+            <div class="rating-right">
+
+
+            <div class="score-badge score-{{ r.score }}">
+                {% if r.score|stringformat:"s" == "0" %}
+                    ?
+                {% else %}
+                    ⭐ {{ r.score }}
+                {% endif %}
+            </div>
+
+                <div class="rating-date">
+                    {{ r.created_at|date:"Y-m-d H:i" }}
+                </div>
+
+            </div>
+
+        </div>
+
+        {% empty %}
+
+            <div class="empty-rating">
+                No ratings yet.
+            </div>
+
+        {% endfor %}
+
+    </div>
+
+{% endblock %}

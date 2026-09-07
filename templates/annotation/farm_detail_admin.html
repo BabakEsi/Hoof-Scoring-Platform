@@ -1,0 +1,70 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Farm Detail{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/farm_detail_admin.css' %}">
+{% endblock %}
+
+{% block content %}
+
+<div class="farm-detail-container">
+
+    <!-- FARM HEADER -->
+    <div class="farm-header">
+
+        <h1>🏡 {{ farm.name }}</h1>
+
+        {% if farm.description %}
+            <p>{{ farm.description }}</p>
+        {% endif %}
+
+        <div class="farm-meta">
+            <span>🐄 Total Cows: {{ farm.cows.count }}</span>
+            <span>📅 {{ farm.created_at|date:"Y-m-d" }}</span>
+        </div>
+
+    </div>
+
+    <!-- COW LIST -->
+    <div class="cow-grid">
+
+        {% for cow in cows %}
+
+            <a href="{% url 'annotation:cow_parts_admin' cow.id %}"
+               class="cow-card">
+
+                <div class="cow-info">
+
+                    <h3>🐮 {{ cow.name }}</h3>
+
+                    {% with sequence=cow.sequences.first %}
+                        {% if sequence %}
+                            {% if sequence.camera_setup == "2" %}
+                                <p>📷 Two-camera setup</p>
+                            {% elif sequence.camera_setup == "3" %}
+                                <p>📷 Three-camera setup</p>
+                            {% endif %}
+                        {% else %}
+                            <p>No dataset imported</p>
+                        {% endif %}
+                    {% endwith %}
+
+                </div>
+
+            </a>
+
+        {% empty %}
+
+            <p class="empty-text">
+                No cows in this farm.
+            </p>
+
+        {% endfor %}
+
+    </div>
+
+</div>
+
+{% endblock %}

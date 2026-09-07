@@ -1,0 +1,58 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %}Farms{% endblock %}
+
+{% block content %}
+
+<link rel="stylesheet" href="{% static 'css/farm.css' %}">
+
+<div class="farm-container">
+
+    <h1 class="page-title">🐄 Farms & Cows</h1>
+
+    {% for farm in farms %}
+
+    <div class="farm-card">
+
+        <div class="farm-header">
+            <a href="{% url 'annotation:farms'%}" class="farm-title">
+                🏡 {{ farm.name }}
+            </a>
+            <p>{{ farm.description }}</p>
+        </div>
+
+        <div class="cow-list">
+
+            {% for cow in farm.cows.all %}
+
+                <a href="{% url 'annotation:cow_detail' cow.id %}" class="cow-card">
+
+                    <div class="cow-name">
+                        🐮 {{ cow.name }}
+                    </div>
+
+                    <div class="cow-meta">
+                        {{ cow.sequences.count }} Sequences
+                    </div>
+
+                </a>
+
+            {% empty %}
+
+                <p class="empty">No cows in this farm</p>
+
+            {% endfor %}
+
+        </div>
+
+    </div>
+
+    {% empty %}
+
+        <p class="empty">No farms found</p>
+
+    {% endfor %}
+
+</div>
+
+{% endblock %}

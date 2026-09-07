@@ -1,0 +1,34 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}
+Finished
+{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/finished.css' %}">
+{% endblock %}
+
+{% block content %}
+
+<div class="finished-container">
+
+    <div class="finished-card">
+
+        <div class="emoji">🎉</div>
+
+        <h1>Well Done!</h1>
+
+        <p>
+            You have completed all available scoring.
+        </p>
+
+        <a href="{% url 'accounts:dashboard' %}" class="dashboard-btn">
+            Back to Dashboard
+        </a>
+
+    </div>
+
+</div>
+
+{% endblock %}

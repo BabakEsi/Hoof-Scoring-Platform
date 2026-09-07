@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Create Farm{% endblock %}
+
+{% block content %}
+
+<link rel="stylesheet" href="{% static 'css/form.css' %}">
+
+<div class="form-container">
+
+    <div class="form-card">
+
+        <h1>🏡 Create New Farm</h1>
+        <p>Add a new farm to the dataset</p>
+
+        <form method="POST">
+            {% csrf_token %}
+
+            <div class="form-group">
+                <label>Farm Name</label>
+                <input type="text" name="name" placeholder="Enter farm name" required>
+            </div>
+
+            <div class="form-group">
+                <label>Description</label>
+                <textarea name="description" placeholder="Optional description"></textarea>
+            </div>
+
+            <div class="form-group">
+                <label>Record Date</label>
+                <input type="datetime-local" name="record_date">
+            </div>
+
+            <button type="submit" class="btn">
+                ➕ Create Farm
+            </button>
+
+            
+
+        </form>
+
+    </div>
+
+</div>
+
+{% endblock %}

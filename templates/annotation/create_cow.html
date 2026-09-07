@@ -1,0 +1,52 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Create Cow{% endblock %}
+
+{% block content %}
+
+<link rel="stylesheet" href="{% static 'css/form.css' %}">
+
+<div class="form-container">
+
+    <div class="form-card">
+
+        <h1>🐄 Create Cow</h1>
+        <p style="text-align:center; color:#6b7280; margin-bottom:20px;">
+            Add a new cow to a farm
+        </p>
+
+        <form method="POST">
+            {% csrf_token %}
+
+            <!-- FARM -->
+            <div class="form-group">
+                <label>Farm </label>
+
+                {% if preselected_farm %}
+                    <input type="hidden" name="farm" value="{{ preselected_farm.id }}">
+                    <p><b>{{ preselected_farm.name }}</b></p>
+                {% endif %}
+            </div>
+
+            <!-- COW NAME -->
+            <div class="form-group">
+                <label>Cow Name</label>
+                <input type="text" name="name" placeholder="Enter cow name" required>
+            </div>
+
+            <!-- DESCRIPTION -->
+            <div class="form-group">
+                <label>Description</label>
+                <textarea name="description" placeholder="Optional"></textarea>
+            </div>
+
+            <button class="btn">Create Cow</button>
+
+        </form>
+
+    </div>
+
+</div>
+
+{% endblock %}

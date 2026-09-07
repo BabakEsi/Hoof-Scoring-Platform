@@ -1,0 +1,181 @@
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background: #f8fafc;
+}
+
+/* HERO */
+
+.hero {
+    min-height: calc(100vh - 80px);
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    text-align: center;
+
+    background:
+        linear-gradient(
+            rgba(15, 23, 42, 0.75),
+            rgba(15, 23, 42, 0.75)
+        ),
+        url("../images/cow-hero.jpg");
+
+    background-size: cover;
+    background-position: center;
+
+    padding: 40px 20px;
+}
+
+.hero-content {
+    max-width: 850px;
+    animation: fadeUp 1s ease;
+}
+
+@keyframes fadeUp {
+    from {
+        opacity: 0;
+        transform: translateY(40px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.hero-content h1 {
+    font-size: 60px;
+    color: white;
+    margin-bottom: 20px;
+    line-height: 1.2;
+
+    animation: slideDown 1.2s ease;
+}
+
+@keyframes slideDown {
+    from {
+        opacity: 0;
+        transform: translateY(-40px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.hero-content p {
+    font-size: 22px;
+    color: #e5e7eb;
+    line-height: 1.8;
+    margin-bottom: 35px;
+
+    animation: fadeIn 1.5s ease;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+.btn {
+    display: inline-block;
+    background: #22c55e;
+    color: white;
+    text-decoration: none;
+    padding: 16px 34px;
+    border-radius: 12px;
+    font-size: 18px;
+    font-weight: bold;
+
+    transition: .3s;
+
+    animation: pulse 2s infinite;
+}
+
+.btn:hover {
+    transform: translateY(-4px) scale(1.05);
+}
+
+@keyframes pulse {
+    0% {
+        box-shadow: 0 0 0 0 rgba(34,197,94,.5);
+    }
+
+    70% {
+        box-shadow: 0 0 0 18px rgba(34,197,94,0);
+    }
+
+    100% {
+        box-shadow: 0 0 0 0 rgba(34,197,94,0);
+    }
+}
+
+/* FEATURES */
+
+.features {
+    max-width: 1200px;
+    margin: 70px auto;
+    padding: 0 20px;
+
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px,1fr));
+    gap: 25px;
+}
+
+.feature-card {
+    background: white;
+    padding: 30px;
+    border-radius: 18px;
+    text-align: center;
+    box-shadow: 0 8px 25px rgba(0,0,0,.05);
+
+    opacity: 0;
+    animation: cardAppear .8s forwards;
+    transition: .3s;
+}
+
+.feature-card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 20px 40px rgba(34,197,94,.15);
+}
+
+.feature-card:nth-child(1) {
+    animation-delay: .2s;
+}
+
+.feature-card:nth-child(2) {
+    animation-delay: .5s;
+}
+
+.feature-card:nth-child(3) {
+    animation-delay: .8s;
+}
+
+@keyframes cardAppear {
+    from {
+        opacity: 0;
+        transform: translateY(40px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.feature-card h3 {
+    color: #15803d;
+    margin-bottom: 10px;
+}
+
+.feature-card p {
+    color: #6b7280;
+    line-height: 1.6;
+}
