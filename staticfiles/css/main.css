@@ -32,30 +32,36 @@ body {
     padding: 18px 0;
 }
 
-.header-inner{
-    display:flex;
-    align-items:center;
-    justify-content:space-between;
+.header-inner {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
 }
 
-.logo{
-    display:flex;
-    align-items:center;
+.main-nav {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
 }
 
-.logo a{
-    display:flex;
-    align-items:center;
-    text-decoration:none;
+.logo {
+    display: flex;
+    align-items: center;
 }
 
-.logo-img{
-    height:48px;      
-    width:auto;
-    display:block;
-    object-fit:contain;
+.logo a {
+    display: flex;
+    align-items: center;
+    text-decoration: none;
 }
 
+.logo-img {
+    height: 48px;
+    width: auto;
+    display: block;
+    object-fit: contain;
+}
 .nav-links {
     list-style: none;
     display: flex;
